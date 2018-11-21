@@ -5,6 +5,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+/*
+  1. 重入，读写
+  2. 可中断，超时
+  3. 多个线程之间创建不同Condition
+*/
 public class ExternalLock {
   ReentrantLock lock;
   Condition fullLatch;
