@@ -1,3 +1,4 @@
+*.puml
 *.logJoinByMapper.1
 *.logJoinByMapper
 # From https://github.com/github/gitignore/blob/master/Gradle.gitignore
