@@ -1,3 +1,5 @@
+import static org.mockito.Mockito.mock;
+
 import mapreduce.WordCountMR;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -9,6 +11,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.mockito.Mock;
 
 import java.io.IOException;
 import java.util.ArrayList;
