@@ -14,7 +14,6 @@ import java.io.IOException;
 public class WordCountMR {
 
   public static class WordCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
-
     Text outKey = new Text();
     IntWritable outValue = new IntWritable(1);
     @Override protected void map(LongWritable key, Text value, Context context)

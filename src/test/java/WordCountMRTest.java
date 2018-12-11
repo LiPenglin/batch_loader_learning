@@ -1,11 +1,13 @@
-import mapreduce.WordCountMR;
+
+import static mapreduce.WordCountMR.WordCountMapper;
+import static mapreduce.WordCountMR.WordCountReducer;
+
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
 import org.apache.hadoop.mrunit.mapreduce.MapReduceDriver;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,36 +16,22 @@ import java.util.ArrayList;
 /**
  * Created by lipenglin on 2018/12/03
  */
-public class TestWordCountMR {
-  MapDriver<LongWritable, Text, Text, IntWritable> mapDriver;
-  ReduceDriver<Text, IntWritable, Text, LongWritable> reduceDriver;
-  MapReduceDriver<LongWritable, Text, Text, IntWritable, Text, LongWritable> MRDriver;
-
-  @Before public void setUp() {
-    mapreduce.WordCountMR.WordCountMapper mapper = new WordCountMR.WordCountMapper();
-    mapDriver = MapDriver.newMapDriver(mapper);
-    mapreduce.WordCountMR.WordCountReducer reducer = new WordCountMR.WordCountReducer();
-    reduceDriver = ReduceDriver.newReduceDriver(reducer);
-    MRDriver = MapReduceDriver.newMapReduceDriver(mapper, reducer);
-  }
-
+public class WordCountMRTest {
   @Test public void WordCountMapper_inputLineShouldSplitBySpace() throws IOException {
-    mapDriver.withInput(new LongWritable(), new Text("love is a touch and yet not a touch"));
-
+    WordCountMapper mapper = new WordCountMapper();
+    MapDriver<LongWritable, Text, Text, IntWritable> mapDriver = MapDriver.newMapDriver(mapper);
+    Text inValue = new Text("love is a ...");
+    mapDriver.withInput(new LongWritable(), inValue);
     mapDriver.withOutput(new Text("love"), new IntWritable(1));
     mapDriver.withOutput(new Text("is"), new IntWritable(1));
     mapDriver.withOutput(new Text("a"), new IntWritable(1));
-    mapDriver.withOutput(new Text("touch"), new IntWritable(1));
-    mapDriver.withOutput(new Text("and"), new IntWritable(1));
-    mapDriver.withOutput(new Text("yet"), new IntWritable(1));
-    mapDriver.withOutput(new Text("not"), new IntWritable(1));
-    mapDriver.withOutput(new Text("a"), new IntWritable(1));
-    mapDriver.withOutput(new Text("touch"), new IntWritable(1));
-
+    mapDriver.withOutput(new Text("..."), new IntWritable(1));
     mapDriver.runTest();
   }
 
   @Test public void WordCountReducer_shouldCountTheNumberOfWordTimes() throws IOException {
+    WordCountReducer reducer = new WordCountReducer();
+    ReduceDriver<Text, IntWritable, Text, LongWritable> reduceDriver = ReduceDriver.newReduceDriver(reducer);
     Text key1 = new Text("love");
     ArrayList<IntWritable> values1 = new ArrayList<IntWritable>() {
       {
@@ -77,6 +65,10 @@ public class TestWordCountMR {
   }
 
   @Test public void WordCountMR_shouldCountTheNumberOfWordTimesByInputLine() throws IOException {
+    WordCountReducer reducer = new WordCountReducer();
+    WordCountMapper mapper = new WordCountMapper();
+    MapReduceDriver<LongWritable, Text, Text, IntWritable, Text, LongWritable> MRDriver =
+        MapReduceDriver.newMapReduceDriver(mapper, reducer);
     MRDriver.withInput(new LongWritable(), new Text("love is a touch and yet not a touch"));
 
     MRDriver.withOutput(new Text("a"), new LongWritable(2));
