@@ -1,4 +1,4 @@
-src/doc/
+src/mk/
 *.puml
 *.logJoinByMapper.1
 *.logJoinByMapper
