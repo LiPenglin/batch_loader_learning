@@ -33,5 +33,6 @@ public class Test {
     A a = spy(new A());
     when(a, "who").thenReturn("B");
     a.say();
+    ///
   }
 }
