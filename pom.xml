@@ -17,6 +17,32 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.thrift.tools</groupId>
+                <artifactId>maven-thrift-plugin</artifactId>
+                <version>0.1.11</version>
+                <configuration>
+                    <thriftExecutable>
+                        ~/opt/tools/thrift
+                    </thriftExecutable>
+                    <!--
+                        1. thriftExecutable, thrift 编译器的位置
+                        2. thriftSourceRoot，thrift源文件的目录，src/main/thrift
+                        3. outputDirectory，生成java文件的目录。一般不需要，java文件的包名是在.thrift文件以namespace的形式定义
+                    -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <!-- maven 在compile 阶段java 源代码必须已生成，
+                        该插件执行必须在compile 之前，放在generate-sources 阶段还是比较合适 -->
+                        <id>thrift-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <properties>
@@ -105,6 +131,15 @@
             <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.thrift/libthrift -->
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
+            <version>0.9.3</version>
+        </dependency>
+
     </dependencies>
+
+
 
 </project>
