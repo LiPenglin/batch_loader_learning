@@ -29,4 +29,8 @@ public class MyString implements Writable {
   @Override public void readFields(DataInput dataInput) throws IOException {
     str = dataInput.readUTF();
   }
+
+  @Override public String toString() {
+    return str;
+  }
 }

@@ -1,9 +1,11 @@
 import org.junit.Test;
 
+import java.util.HashMap;
+
 /**
  * Created by lipenglin on 2018/12/13
  */
-public class NumberTest {
+public class BasicTest {
 
   @Test public void conversion() {
     System.out.println((int)1.4);
@@ -59,9 +61,13 @@ public class NumberTest {
 
     str1(s1);
     myStr(myS);
-//    str2(s2);
+    MyString str2 = str2(myS);
+    MyString newString = new MyString(s1);
+    str2 = newString;
+    //    str2(s2);
     System.out.println(s1);
     System.out.println(myS);
+    System.out.println(str2);
 //    System.out.println(s2);
   }
 
@@ -77,4 +83,16 @@ public class NumberTest {
 //  private void str2(final String s) {
 //    s = "change";
 //  }
+
+  private MyString str2(final MyString myString) {
+    return myString;
+  }
+
+  @Test
+  public void testMap() {
+    HashMap<Object, Object> hashMap = new HashMap<>();
+    hashMap.put(1, 'a');
+    hashMap.put(1, 'b');
+    System.out.println(hashMap.get(1));
+  }
 }

@@ -5,6 +5,8 @@ import static mapreduce.WordCountMR.WordCountReducer;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.JobClient;
+import org.apache.hadoop.mapred.RunningJob;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
 import org.apache.hadoop.mrunit.mapreduce.MapReduceDriver;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
@@ -80,5 +82,14 @@ public class WordCountMRTest {
     MRDriver.withOutput(new Text("yet"), new LongWritable(1));
 
     MRDriver.runTest();
+  }
+
+  @Test public void killJobTest_shouldGetRunningJobByJobClientAndKillJob() throws Exception {
+    String JobId = "job_local227131839_0001";
+    // https://blog.csdn.net/u011518678/article/details/51356210
+    // 需要通过任务远程提交的conf构建JobClient
+    JobClient jobClient = new JobClient();
+    RunningJob job = jobClient.getJob(JobId);
+    System.out.println(job.getJobStatus());
   }
 }
